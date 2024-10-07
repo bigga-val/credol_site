@@ -1,0 +1,47 @@
+{% extends 'admin_base.html.twig' %}
+
+{% block title %}Service index{% endblock %}
+
+{% block body %}
+    <h1>Liste des services</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Designation</th>
+                <th>Categorie</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% set counter = 0 %}
+        {% for service in services %}
+            {% set counter = counter + 1 %}
+            <tr>
+                <td>{{ counter }}</td>
+                <td>{{ service.designation }}</td>
+                <td>{{ service.categorie.designation | capitalize }}</td>
+                <td>
+                    {% if service.details|length > 20 %}
+                        {{ service.details|striptags|slice(0, 20) }}...
+                    {% else %}
+                        {{ service.details }}
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('app_service_show', {'id': service.id}) }}" class="btn btn-success btn-sm">Details</a>
+                    <a href="{{ path('app_service_edit', {'id': service.id}) }}" class="btn btn-success btn-sm">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_service_new') }}">Create new</a>
+{% endblock %}
